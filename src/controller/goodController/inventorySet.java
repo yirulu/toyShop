@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.impl.goodDaoImpl;
 import model.good;
+import util.ImagePanel;
 import util.button;
 
 import javax.swing.JLabel;
@@ -25,6 +26,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 public class inventorySet extends JFrame {
 
@@ -52,6 +56,8 @@ public class inventorySet extends JFrame {
 	 * Create the frame.
 	 */
 	public inventorySet() {
+		setTitle("Toy Shop");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(inventorySet.class.getResource("/image/title.jpg")));
 		List<good> l=new goodDaoImpl().QueryAll();
 		DefaultComboBoxModel<good> comboBoxModel = new DefaultComboBoxModel<>(l.toArray(new good[0]));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,20 +69,16 @@ public class inventorySet extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
+		ImagePanel panel = new ImagePanel("/image/goodBackground.jpg");
 		panel.setBounds(0, 0, 327, 258);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		
-		
-		
-		JLabel JLabel = new JLabel("原庫存");
-		JLabel.setBounds(70, 93, 49, 35);
-		panel.add(JLabel);
-		
 		JLabel lblNewLabel_1 = new JLabel("新庫存");
-		lblNewLabel_1.setBounds(70, 143, 49, 35);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("新細明體", Font.BOLD, 16));
+		lblNewLabel_1.setForeground(Color.WHITE);
+		lblNewLabel_1.setBounds(41, 143, 66, 35);
 		panel.add(lblNewLabel_1);
 		
 		newInventory = new JTextField();
@@ -88,6 +90,7 @@ public class inventorySet extends JFrame {
 		
 		
 		JButton btnNewButton_1 = new JButton("回管理頁");
+		btnNewButton_1.setFont(new Font("新細明體", Font.BOLD, 16));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -98,12 +101,16 @@ public class inventorySet extends JFrame {
 		btnNewButton_1.setBounds(51, 199, 104, 35);
 		panel.add(btnNewButton_1);
 		
-		JLabel oldIInventory = new JLabel("");
+		JLabel oldIInventory = new JLabel("請選擇一樣商品");
+		oldIInventory.setFont(new Font("新細明體", Font.BOLD, 16));
+		oldIInventory.setForeground(Color.WHITE);
 		oldIInventory.setHorizontalAlignment(SwingConstants.CENTER);
-		oldIInventory.setBounds(117, 98, 119, 31);
+		oldIInventory.setBounds(80, 46, 181, 31);
 		panel.add(oldIInventory);
 		
 		JComboBox comboBox = new JComboBox<>(comboBoxModel);
+		comboBox.setSelectedIndex(-1);
+		comboBox.setFont(new Font("新細明體", Font.BOLD, 16));
 		comboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
@@ -117,13 +124,14 @@ public class inventorySet extends JFrame {
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				good g=(good)comboBox.getSelectedItem();
-				oldIInventory.setText(g.getInventory().toString()+"單位");
+				oldIInventory.setText("原庫存"+g.getInventory().toString()+"個");
 			}
 		});
-		comboBox.setBounds(81, 37, 181, 46);
+		comboBox.setBounds(80, 87, 181, 46);
 		panel.add(comboBox);
 		
 		JButton btnNewButton = new JButton("改庫存");
+		btnNewButton.setFont(new Font("新細明體", Font.BOLD, 16));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -151,5 +159,12 @@ public class inventorySet extends JFrame {
 		});
 		btnNewButton.setBounds(176, 200, 104, 35);
 		panel.add(btnNewButton);
+		
+		JLabel oldIInventory_1 = new JLabel("更改庫存");
+		oldIInventory_1.setFont(new Font("新細明體", Font.BOLD, 20));
+		oldIInventory_1.setForeground(Color.WHITE);
+		oldIInventory_1.setHorizontalAlignment(SwingConstants.CENTER);
+		oldIInventory_1.setBounds(80, 5, 181, 31);
+		panel.add(oldIInventory_1);
 	}
 }

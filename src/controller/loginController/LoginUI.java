@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.orderController.orderUI;
+import dao.impl.goodDaoImpl;
 import dao.impl.memberDaoImpl;
 import model.member;
 import util.Clock;
@@ -20,12 +21,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.Window.Type;
+import java.awt.Toolkit;
 
 public class LoginUI extends JFrame {
 
@@ -40,7 +45,8 @@ public class LoginUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginUI frame = new LoginUI();
+					LoginUI frame = new LoginUI();	
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +59,9 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Toy Shop");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginUI.class.getResource("/image/title.jpg")));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(509, 449);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -66,13 +74,13 @@ public class LoginUI extends JFrame {
 		panel.setLayout(null);
 		contentPane.add(panel);
 		
-				JLabel lblNewLabel_1 = new JLabel("帳號");
-				lblNewLabel_1.setForeground(Color.WHITE);
-				lblNewLabel_1.setBackground(Color.WHITE);
-				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-				lblNewLabel_1.setFont(new Font("新細明體", Font.BOLD, 20));
-				lblNewLabel_1.setBounds(50, 77, 134, 46);
-				panel.add(lblNewLabel_1);
+		JLabel lblNewLabel_1 = new JLabel("帳號");
+		lblNewLabel_1.setForeground(Color.WHITE);
+		lblNewLabel_1.setBackground(Color.WHITE);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("新細明體", Font.BOLD, 20));
+		lblNewLabel_1.setBounds(50, 77, 134, 46);
+		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel = new JLabel("登入畫面");
 		lblNewLabel.setForeground(Color.WHITE);
@@ -154,7 +162,11 @@ public class LoginUI extends JFrame {
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
+				int choice=JOptionPane.showConfirmDialog(null,"真的要離開嗎?", "離開",JOptionPane.YES_NO_OPTION);
+				if (choice == JOptionPane.YES_OPTION) {
+					System.exit(0);
+		        } 
+		        
 			}
 		});
 		btnNewButton_2.setBounds(281, 345, 134, 34);
@@ -201,10 +213,11 @@ public class LoginUI extends JFrame {
 		panel.add(btnNewButton_1_1);
 		
 		JLabel clock = new Clock();
-		clock.setFont(new Font("新細明體", Font.BOLD, 14));
+		clock.setFont(new Font("新細明體", Font.BOLD, 13));
 		clock.setForeground(Color.WHITE);
 		clock.setBackground(Color.WHITE);
-		clock.setBounds(359, 386, 134, 24);
+		clock.setBounds(366, 386, 127, 24);
 		panel.add(clock);
+		
 	}
 }

@@ -53,6 +53,7 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTable;
+import java.awt.Toolkit;
 
 public class orderUI extends JFrame {
 
@@ -86,6 +87,7 @@ public class orderUI extends JFrame {
 	 * Create the frame.
 	 */
 	public orderUI(String Account_1) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(orderUI.class.getResource("/image/title.jpg")));
 		if(Account_1!=null)
 		{
 			this.Account=Account_1;			
@@ -94,7 +96,7 @@ public class orderUI extends JFrame {
 		tableModel=new DefaultTableModel();
 		List<good> l=new goodDaoImpl().QueryAll();
 		DefaultComboBoxModel<good> comboBoxModel = new DefaultComboBoxModel<>(l.toArray(new good[0]));
-		Map<good,Integer> gMap=new HashMap<>();
+		Map<String,Integer> gMap=new HashMap<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(667, 558);
 		setLocationRelativeTo(null);
@@ -122,23 +124,24 @@ public class orderUI extends JFrame {
 		price.setEditable(false);
 		price.setText("請選擇一件商品");
 		price.setBackground(SystemColor.menu);
-		price.setBounds(81, 68, 146, 45);
+		price.setBounds(25, 68, 274, 45);
 		panel.add(price);
 		
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
 		JSpinner spinner = new JSpinner(spinnerModel);
 		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-		spinner.setBounds(229, 123, 66, 45);
+		spinner.setBounds(243, 123, 56, 45);
 		panel.add(spinner);
 		
 		JComboBox<good> goodListCombo = new JComboBox<>(comboBoxModel);
+		goodListCombo.setSelectedIndex(-1);
 		goodListCombo.setFont(new Font("新細明體", Font.BOLD, 18));
 		goodListCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				photo.setText("");
 				spinner.setValue(1);
 				good g=(good)goodListCombo.getSelectedItem();
-				price.setText("售價"+g.getPrice().toString()+"元"+"\n庫存尚有"+g.getInventory().toString()+"件");
+				price.setText("售價\t"+g.getPrice().toString()+"元"+"\n庫存尚有\t"+g.getInventory().toString()+"個");
 				photo.setIcon(new ImageIcon(orderUI.class.getResource(g.getImage())));
 				//設定下單數量不能超過庫存
 				int newMaxValue = g.getInventory();
@@ -155,12 +158,13 @@ public class orderUI extends JFrame {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });
-		goodListCombo.setBounds(10, 123, 209, 45);
+		goodListCombo.setBounds(25, 123, 214, 45);
 		panel.add(goodListCombo);
 		
 		
 		
 		JButton btnNewButton = new JButton("回登入頁");
+		btnNewButton.setFont(new Font("新細明體", Font.BOLD, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -178,9 +182,9 @@ public class orderUI extends JFrame {
 		
 		
 		JTextArea output = new JTextArea();
-		output.setFont(new Font("Monospaced", Font.BOLD, 14));
+		output.setFont(new Font("Monospaced", Font.BOLD, 16));
 		output.setEditable(false);
-		output.setBounds(323, 0, 328, 58);
+		output.setBounds(327, 359, 314, 70);
 		panel.add(output);
 		
 		
@@ -189,29 +193,8 @@ public class orderUI extends JFrame {
 		label.setBounds(391, 100, -363, -114);
 		panel.add(label);
 		
-		JButton delete = new JButton("清除選取");
-		delete.setFont(new Font("新細明體", Font.BOLD, 16));
-		delete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-						output.setText(" ");
-						int i = table.getSelectedRow();
-						if (i >= 0) {
-							tableModel.removeRow(i);
-						} else {
-							int rowCount = tableModel.getRowCount();
-							if (rowCount > 0) {
-								// 刪除最後一行
-								tableModel.removeRow(rowCount - 1);
-							}
-
-						}
-				
-			}
-		});
-		delete.setBounds(379, 437, 103, 36);
-		panel.add(delete);
+		
+		
 		
 		
 		Object[] column = { "商品", "價格","數量" };
@@ -219,7 +202,7 @@ public class orderUI extends JFrame {
 		tableModel.setColumnIdentifiers(column);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(379, 68, 262, 351);
+		scrollPane.setBounds(327, 10, 314, 351);
 		panel.add(scrollPane);
 		
 		table = new JTable();
@@ -228,27 +211,28 @@ public class orderUI extends JFrame {
 		table.setModel(tableModel);
 		tableModel = (DefaultTableModel) table.getModel();
 		
-		JButton btnNewButton_1 = new JButton("加到購物車");
-		btnNewButton_1.setFont(new Font("新細明體", Font.BOLD, 14));
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
+		JButton add = new JButton("加到購物車");
+		add.setFont(new Font("新細明體", Font.BOLD, 14));
+		add.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				tableModel.setRowCount(0);
 				good g=(good)goodListCombo.getSelectedItem();
 				g.setAmount((int)spinner.getValue());
-				if(gMap.containsKey(g))
+				if(gMap.containsKey(g.getName()))
 				{
-					int oldAmount=gMap.get(g);
+					int oldAmount=gMap.get(g.getName());
 					int newAmount=oldAmount+g.getAmount();
 					g.setAmount(newAmount);
-					gMap.put(g, g.getAmount());
+					gMap.put(g.getName(), g.getAmount());
 				}else
-				gMap.put(g, g.getAmount());
+				gMap.put(g.getName(), g.getAmount());
 				
 				
 				gMap.forEach((K,V)->
 				{
-					tableModel.addRow(new Object[] {K.getName(),K.getPrice(),V});
+					good g1=new goodDaoImpl().QueryName(K);
+					tableModel.addRow(new Object[] {K,g1.getPrice(),V});
 				});
 				//計算總金額
 				sum = 0;
@@ -269,28 +253,58 @@ public class orderUI extends JFrame {
 			}
 		});
 		
-		btnNewButton_1.setBounds(97, 437, 110, 36);
-		panel.add(btnNewButton_1);
+		add.setBounds(97, 437, 110, 36);
+		panel.add(add);
+		
+		JButton delete = new JButton("清除選取");
+		delete.setFont(new Font("新細明體", Font.BOLD, 16));
+		delete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+						output.setText(" ");
+						int i = table.getSelectedRow();
+						if (i >= 0) {
+							good g=new goodDaoImpl().QueryName(table.getValueAt(i, 0).toString());
+							tableModel.removeRow(i);
+							gMap.remove(g.getName());
+						
+						} else {
+							int rowCount = tableModel.getRowCount();
+							if (rowCount > 0) {
+								// 刪除最後一行
+								good g=new goodDaoImpl().QueryName(table.getValueAt(rowCount - 1, 0).toString());
+								tableModel.removeRow(rowCount - 1);
+								gMap.remove(g.getName());
+							}
+
+						}
+				
+			}
+		});
+		delete.setBounds(337, 437, 103, 36);
+		panel.add(delete);
 		
 		JTextArea userInfo = new JTextArea();
-		userInfo.setToolTipText("VIP 0  無折扣\r\nVIP 1 95折\r\nVIP 2 9折\r\nVIP 3 85折\r\nVIP 4 5折");
+		
 		userInfo.setFont(new Font("Monospaced", Font.BOLD, 16));
 		userInfo.setEditable(false);
-		userInfo.setText(user.getName()+"\t先生/小姐您好\n您的VIP等級為:\t"+user.getVipLevel());
-		userInfo.setBackground(SystemColor.menu);
-		userInfo.setBounds(0, 0, 328, 58);
+		userInfo.setText("親愛的"+user.getName()+"\t先生/小姐您好\n您的VIP等級為:"+user.getVipLevel()+"->\t"+user.discountShow(user.getVipLevel()));
+		userInfo.setBackground(Color.ORANGE);
+		userInfo.setBounds(25, 10, 274, 58);
 		panel.add(userInfo);
 		
 		JLabel clock = new Clock();
+		clock.setHorizontalAlignment(SwingConstants.CENTER);
 		clock.setForeground(Color.WHITE);
-		clock.setFont(new Font("新細明體", Font.BOLD, 14));
-		clock.setBounds(483, 483, 153, 26);
+		clock.setFont(new Font("新細明體", Font.BOLD, 13));
+		clock.setBounds(488, 485, 153, 26);
 		panel.add(clock);
 		
 		
-		JButton btnNewButton_1_2 = new JButton("送出訂單");
-		btnNewButton_1_2.setFont(new Font("新細明體", Font.BOLD, 16));
-		btnNewButton_1_2.addMouseListener(new MouseAdapter() {
+		JButton send = new JButton("送出訂單");
+		send.setFont(new Font("新細明體", Font.BOLD, 16));
+		send.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 						
@@ -328,8 +342,21 @@ public class orderUI extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton_1_2.setBounds(533, 437, 103, 36);
-		panel.add(btnNewButton_1_2);
+		send.setBounds(533, 437, 103, 36);
+		panel.add(send);
+		
+		JButton btnNewButton_1 = new JButton("已購買訂單");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				orderQuery oq=new orderQuery(Account);
+				oq.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton_1.setFont(new Font("新細明體", Font.BOLD, 16));
+		btnNewButton_1.setBounds(253, 485, 136, 23);
+		panel.add(btnNewButton_1);
 		
 		
 		

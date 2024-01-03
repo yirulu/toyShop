@@ -155,8 +155,14 @@ public class memberDaoImpl implements memberDao {
 			PreparedStatement ps = conn.prepareStatement(SQL);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				member m = new member(rs.getString("account"), rs.getString("password"), rs.getString("name"),
-						rs.getString("phone"), rs.getString("email"));
+				member m = new member();
+				m.setAccount(rs.getString("account"));
+				m.setPassword(rs.getString("password"));
+				m.setName(rs.getString("name"));
+				m.setPhone(rs.getString("phone"));
+				m.setEmail(rs.getString("email"));
+				m.setAccConsumption(rs.getInt("accConsumption"));
+				m.setVipLevel(rs.getInt("vipLevel"));
 				l.add(m);
 
 			}
