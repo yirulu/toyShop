@@ -26,6 +26,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ListSelectionModel;
 import java.awt.Font;
+import util.Clock;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class goodManager extends JFrame {
 
@@ -53,6 +56,8 @@ public class goodManager extends JFrame {
 	 * Create the frame.
 	 */
 	public goodManager() {
+		setTitle("Toy Shop");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(goodManager.class.getResource("/image/title.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(634, 496);
 		setLocationRelativeTo(null);
@@ -68,6 +73,8 @@ public class goodManager extends JFrame {
 		panel.setLayout(null);
 		
 		gTable = new JTable();
+		gTable.setEnabled(false);
+		gTable.setFont(new Font("新細明體", Font.PLAIN, 12));
 		gTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableModel = new DefaultTableModel();
 		Object[] column = { "商品名稱", "價格", "庫存","銷售量","商品圖片"};
@@ -202,6 +209,13 @@ public class goodManager extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(216, 6, 193, 37);
 		panel.add(lblNewLabel);
+		
+		Clock clock = new Clock();
+		clock.setForeground(Color.WHITE);
+		clock.setFont(new Font("新細明體", Font.BOLD, 14));
+		clock.setBackground(Color.WHITE);
+		clock.setBounds(10, 5, 156, 24);
+		panel.add(clock);
 		btnNewButton_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

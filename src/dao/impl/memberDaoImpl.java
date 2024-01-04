@@ -38,7 +38,7 @@ public class memberDaoImpl implements memberDao {
 		 */
 
 		//System.out.println(new memberDaoImpl().nameIsExist("11"));
-		member m=new member(); 
+		//member m=new member(); 
 	}
 
 	@Override
@@ -155,8 +155,14 @@ public class memberDaoImpl implements memberDao {
 			PreparedStatement ps = conn.prepareStatement(SQL);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				member m = new member(rs.getString("account"), rs.getString("password"), rs.getString("name"),
-						rs.getString("phone"), rs.getString("email"));
+				member m = new member();
+				m.setAccount(rs.getString("account"));
+				m.setPassword(rs.getString("password"));
+				m.setName(rs.getString("name"));
+				m.setPhone(rs.getString("phone"));
+				m.setEmail(rs.getString("email"));
+				m.setAccConsumption(rs.getInt("accConsumption"));
+				m.setVipLevel(rs.getInt("vipLevel"));
 				l.add(m);
 
 			}
@@ -275,6 +281,21 @@ public class memberDaoImpl implements memberDao {
 			e.printStackTrace();
 		}
 		
+		
+	}
+
+	@Override
+	public void delete(String account) {
+		Connection conn=DbConnection.getDb();
+		String SQL="delete from member where account=?";
+		try {
+			PreparedStatement ps=conn.prepareStatement(SQL);
+			ps.setString(1, account);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

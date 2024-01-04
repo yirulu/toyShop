@@ -136,4 +136,29 @@ public class member {
 		
 		
 	}
+	public String discountShow(Integer vipLevel)
+	{
+		switch(getVipLevel()) 
+		{				
+			case 1:
+				return "打9折";
+				
+				
+			case 2:
+				return "打85折";
+								
+			case 3:
+				return "打8折";
+				
+				
+			case 4:
+				return "打5折";
+				
+				
+			default:
+				return "無折扣";
+				
+		}
+		
+	}
 }

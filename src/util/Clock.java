@@ -23,7 +23,7 @@ public class Clock extends JLabel implements Runnable {
 
     public void run() {
         while (true) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy / MM / dd HH:mm:ss");
             String dateTime = sdf.format(new Date());
             setText(dateTime);
 

@@ -191,6 +191,33 @@ public class morderDaoImpl implements morderDao{
 		return check;
 	}
 
+	@Override
+	public List<morder> QueryAccount(String account) {
+		Connection conn=DbConnection.getDb();
+		String SQL="select * from morder where account=?";
+		List<morder> l=new ArrayList();
+		try {
+			PreparedStatement ps=conn.prepareStatement(SQL);
+			ps.setString(1, account);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next())
+			{
+				morder o=new morder();
+				o.setId(rs.getInt("id"));
+				o.setAccount(rs.getString("account"));
+				o.setOrderId(rs.getString("orderId"));
+				o.setDetail(rs.getString("detail"));
+				o.setTotal(rs.getInt("total"));
+				o.setOrderDate(rs.getString("orderDate"));
+				l.add(o);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return l;
+	}
+
 	
 
 	

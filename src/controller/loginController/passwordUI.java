@@ -21,6 +21,7 @@ import util.Clock;
 import util.ImagePanel;
 import util.button;
 import java.awt.Color;
+import java.awt.Toolkit;
 public class passwordUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -49,6 +50,8 @@ public class passwordUI extends JFrame {
 	 * Create the frame.
 	 */
 	public passwordUI() {
+		setTitle("Toy Shop");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(passwordUI.class.getResource("/image/title.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize( 445, 376);
 		setLocationRelativeTo(null);
@@ -65,9 +68,9 @@ public class passwordUI extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("忘記密碼");
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("新細明體", Font.BOLD, 18));
+		lblNewLabel.setFont(new Font("新細明體", Font.BOLD, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(127, 10, 182, 33);
+		lblNewLabel.setBounds(127, 10, 198, 47);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("帳號");
@@ -157,5 +160,12 @@ public class passwordUI extends JFrame {
 		JLabel lblNewLabel_2 = new Clock();
 		lblNewLabel_2.setBounds(302, 17, 117, 21);
 		panel.add(lblNewLabel_2);
+		
+		JLabel clock = new Clock();
+		clock.setFont(new Font("新細明體", Font.BOLD, 13));
+		clock.setForeground(Color.WHITE);
+		clock.setHorizontalAlignment(SwingConstants.CENTER);
+		clock.setBounds(279, 304, 150, 33);
+		panel.add(clock);
 	}
 }

@@ -12,6 +12,7 @@ public interface morderDao {
 	public void add(morder o);
 	//read
 	public List<morder> QueryAll();
+	public List<morder> QueryAccount(String account);
 	public Boolean orderIdIsExist(String orderId);
 	public morder QueryOrderId(String orderId);
 	

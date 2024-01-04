@@ -21,5 +21,5 @@ public interface memberDao {
 	public void modifyPw(String account,String password);
 	public void update(member m,Integer newAC,Integer newVIP);
 	//delete
-	
+	public void delete(String account);
 }
